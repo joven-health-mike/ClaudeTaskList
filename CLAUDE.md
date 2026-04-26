@@ -47,4 +47,4 @@ Full architecture documentation is in `architecture/`:
 
 ## Project Status
 
-This is a freshly scaffolded project. `MainActivity` contains only the default "Hello Android" Compose scaffold — no task-list logic has been implemented yet.
+The application is fully implemented. All layers — Room database, Repository, ViewModels, and Compose UI screens — are complete and wired together. Unit tests exist for all three ViewModels (`TaskListViewModelTest`, `TaskDetailViewModelTest`, `SearchViewModelTest`).

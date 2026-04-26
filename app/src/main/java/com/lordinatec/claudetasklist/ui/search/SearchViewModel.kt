@@ -24,12 +24,12 @@ data class SearchUiState(
     val query: String = "",
     val results: List<Task> = emptyList(),
     val isLoading: Boolean = false,
+    val copySuccessMessage: String? = null,
     val errorMessage: String? = null
 )
 
 sealed class SearchUiEvent {
     data class NavigateToDetail(val taskId: Long) : SearchUiEvent()
-    data object CopySuccess : SearchUiEvent()
 }
 
 @HiltViewModel
@@ -67,11 +67,18 @@ class SearchViewModel @Inject constructor(
         _events.emit(SearchUiEvent.NavigateToDetail(task.id))
     }
 
+    fun onToggleCompletion(task: Task) = viewModelScope.launch {
+        repository.toggleTaskCompletion(task).onFailure { e ->
+            _uiState.update { it.copy(errorMessage = e.message) }
+        }
+    }
+
     fun onCopyTask(task: Task) = viewModelScope.launch {
         repository.copyAsNewTask(task)
-            .onSuccess { _events.emit(SearchUiEvent.CopySuccess) }
+            .onSuccess { _uiState.update { it.copy(copySuccessMessage = "Task copied to active list") } }
             .onFailure { e -> _uiState.update { it.copy(errorMessage = e.message) } }
     }
 
+    fun onCopySuccessDismissed() { _uiState.update { it.copy(copySuccessMessage = null) } }
     fun onErrorDismissed() { _uiState.update { it.copy(errorMessage = null) } }
 }

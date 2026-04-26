@@ -5,13 +5,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.dimensionResource
+import com.lordinatec.claudetasklist.R
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -79,7 +85,7 @@ fun TaskListScreen(
                         Icon(Icons.Default.Search, contentDescription = "Search")
                     }
                     IconButton(onClick = { showSortMenu = true }) {
-                        Icon(Icons.Default.Search, contentDescription = "Sort") // placeholder icon
+                        Icon(Icons.Default.MoreVert, contentDescription = "Sort")
                     }
                     DropdownMenu(expanded = showSortMenu, onDismissRequest = { showSortMenu = false }) {
                         DropdownMenuItem(
@@ -143,12 +149,26 @@ private fun SwipeToDismissTaskItem(
     )
     SwipeToDismissBox(
         state = dismissState,
+        enableDismissFromStartToEnd = false,
         backgroundContent = {
+            val thresholdPx = with(LocalDensity.current) {
+                dimensionResource(R.dimen.swipe_to_dismiss_threshold).toPx()
+            }
+            val isDragging by remember {
+                derivedStateOf {
+                    try { dismissState.requireOffset() } catch (e: IllegalStateException) { 0f }.let { kotlin.math.abs(it) > thresholdPx }
+                }
+            }
             Box(
-                modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(if (isDragging) MaterialTheme.colorScheme.error else Color.Transparent)
+                    .padding(horizontal = 16.dp),
                 contentAlignment = Alignment.CenterEnd
             ) {
-                Icon(Icons.Default.Delete, contentDescription = "Delete", tint = Color.White)
+                if (isDragging) {
+                    Icon(Icons.Default.Delete, contentDescription = "Delete", tint = Color.White)
+                }
             }
         }
     ) {

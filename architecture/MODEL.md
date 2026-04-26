@@ -127,12 +127,12 @@ Room populates this automatically when the DAO query returns a `TaskWithTags`.
 
 ---
 
-## Type Converters
+## Type Storage
 
 `LocalDate` is stored as a **Long epoch day** (`LocalDate.toEpochDay()` / `LocalDate.ofEpochDay()`).  
 `Priority` is stored as its **String name** (`Priority.name` / `Priority.valueOf()`).
 
-Both conversions are handled by a single `Converters` class registered on `TaskDatabase` via `@TypeConverters`. No converter is needed for `LocalDate` in entities because the mapping is done explicitly in the entity fields (Long columns) rather than via a Room type converter, keeping the schema transparent.
+There is no `@TypeConverters` class. The entity fields are raw `Long` and `String` columns; conversions happen explicitly in the mapper extension functions (`data/mapper/TaskMapper.kt`), keeping the schema transparent and the conversion logic co-located with the mapping logic.
 
 ---
 

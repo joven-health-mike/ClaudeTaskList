@@ -84,11 +84,16 @@ class SearchViewModelTest {
     }
 
     @Test
-    fun `onCopyTask emits CopySuccess on success`() = runTest {
-        viewModel.events.test {
-            viewModel.onCopyTask(completedTask)
-            assertEquals(SearchUiEvent.CopySuccess, awaitItem())
-        }
+    fun `onCopyTask sets copySuccessMessage on success`() = runTest {
+        viewModel.onCopyTask(completedTask)
+        assertEquals("Task copied to active list", viewModel.uiState.value.copySuccessMessage)
+    }
+
+    @Test
+    fun `onCopySuccessDismissed clears copySuccessMessage`() = runTest {
+        viewModel.onCopyTask(completedTask)
+        viewModel.onCopySuccessDismissed()
+        assertNull(viewModel.uiState.value.copySuccessMessage)
     }
 
     @Test

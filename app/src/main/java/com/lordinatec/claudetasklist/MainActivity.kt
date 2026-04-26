@@ -109,7 +109,6 @@ class MainActivity : ComponentActivity() {
                                 when (event) {
                                     is SearchUiEvent.NavigateToDetail ->
                                         navController.navigate("$ROUTE_TASK_DETAIL?$NAV_ARG_TASK_ID=${event.taskId}")
-                                    SearchUiEvent.CopySuccess -> { /* handled via snackbar in SearchScreen */ }
                                 }
                             }
                         }
@@ -117,8 +116,9 @@ class MainActivity : ComponentActivity() {
                             uiState = uiState,
                             onQueryChange = viewModel::onQueryChange,
                             onTaskClick = viewModel::onTaskClick,
-                            onToggleCompletion = { /* search results are read-only for completion */ },
+                            onToggleCompletion = viewModel::onToggleCompletion,
                             onCopyTask = viewModel::onCopyTask,
+                            onCopySuccessDismissed = viewModel::onCopySuccessDismissed,
                             onNavigateBack = { navController.popBackStack() },
                             onErrorDismissed = viewModel::onErrorDismissed
                         )

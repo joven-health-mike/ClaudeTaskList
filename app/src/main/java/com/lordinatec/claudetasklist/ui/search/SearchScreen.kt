@@ -37,6 +37,7 @@ fun SearchScreen(
     onTaskClick: (Task) -> Unit,
     onToggleCompletion: (Task) -> Unit,
     onCopyTask: (Task) -> Unit,
+    onCopySuccessDismissed: () -> Unit,
     onNavigateBack: () -> Unit,
     onErrorDismissed: () -> Unit,
     modifier: Modifier = Modifier
@@ -45,6 +46,13 @@ fun SearchScreen(
     val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(Unit) { focusRequester.requestFocus() }
+
+    LaunchedEffect(uiState.copySuccessMessage) {
+        uiState.copySuccessMessage?.let {
+            snackbarHostState.showSnackbar(it)
+            onCopySuccessDismissed()
+        }
+    }
 
     LaunchedEffect(uiState.errorMessage) {
         uiState.errorMessage?.let {
@@ -105,6 +113,7 @@ private fun SearchScreenPreview() {
             onTaskClick = {},
             onToggleCompletion = {},
             onCopyTask = {},
+            onCopySuccessDismissed = {},
             onNavigateBack = {},
             onErrorDismissed = {}
         )

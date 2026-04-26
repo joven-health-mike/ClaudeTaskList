@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="swipe_to_dismiss_threshold">90dp</dimen>
+</resources>
