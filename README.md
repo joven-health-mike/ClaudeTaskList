@@ -26,7 +26,7 @@ Predefined categories for organizing tasks:
 
 ### Browse & Search
 - Filter the task list by tag
-- Sort tasks by due date or priority
+- Sort tasks by creation date, due date, or priority
 - Search across all tasks (active and completed) by title or description
 - Copy any completed task as a new active task — the completed original is preserved
 

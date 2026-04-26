@@ -76,7 +76,7 @@ Completed tasks remain in the list with a strikethrough title and muted colors. 
 
 ### Swipe to Delete
 
-Implemented with Material3 `SwipeToDismissBox`. Swiping in either direction reveals a red background with a delete icon, then calls `onDeleteTask(task)`. There is no undo at the UI layer — deletion is immediate and permanent (see Repository layer).
+Implemented with Material3 `SwipeToDismissBox`. Swiping **right-to-left only** reveals a red background with a delete icon once the drag passes the threshold defined in `R.dimen.swipe_to_dismiss_threshold`, then calls `onDeleteTask(task)`. There is no undo at the UI layer — deletion is immediate and permanent (see Repository layer).
 
 ### Priority Badge
 
@@ -172,7 +172,7 @@ SearchResultItem
 └── onClick           →  onTaskClick(task)
 ```
 
-A `Snackbar` is shown transiently when `SearchUiEvent.CopySuccess` is received, confirming the task was added to the active list.
+A `Snackbar` is shown transiently when `uiState.copySuccessMessage` is non-null, confirming the task was added to the active list.
 
 ---
 

@@ -166,6 +166,7 @@ data class SearchUiState(
     val query: String = "",
     val results: List<Task> = emptyList(),
     val isLoading: Boolean = false,
+    val copySuccessMessage: String? = null,
     val errorMessage: String? = null
 )
 ```
@@ -175,7 +176,6 @@ data class SearchUiState(
 ```kotlin
 sealed class SearchUiEvent {
     data class NavigateToDetail(val taskId: Long) : SearchUiEvent()
-    object CopySuccess : SearchUiEvent()       // transient feedback after copy
 }
 ```
 
@@ -185,7 +185,9 @@ sealed class SearchUiEvent {
 |---|---|
 | `onQueryChange(query)` | Updates `query`; triggers debounced search |
 | `onTaskClick(task)` | Emits `NavigateToDetail(task.id)` |
-| `onCopyTask(task)` | Calls `repository.copyAsNewTask(task)`; emits `CopySuccess` on success; sets `errorMessage` on failure |
+| `onToggleCompletion(task)` | Calls `repository.toggleTaskCompletion(task)`; sets `errorMessage` on failure |
+| `onCopyTask(task)` | Calls `repository.copyAsNewTask(task)`; sets `copySuccessMessage` on success; sets `errorMessage` on failure |
+| `onCopySuccessDismissed()` | Clears `copySuccessMessage` |
 | `onErrorDismissed()` | Clears `errorMessage` |
 
 ### Search Debounce

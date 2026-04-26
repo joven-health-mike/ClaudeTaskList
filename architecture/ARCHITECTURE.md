@@ -71,6 +71,7 @@ Task
 ├── dueDate: LocalDate?
 ├── priority: Priority (LOW | MEDIUM | HIGH)
 ├── creationDate: LocalDate (auto-set on insert)
+├── completedDate: LocalDate? (set when isCompleted flips to true; cleared on unComplete)
 └── isCompleted: Boolean
 
 Tag
@@ -93,7 +94,7 @@ Single-activity app (`MainActivity`). All navigation is handled by a `NavHost` i
 | Route | Screen | Description |
 |---|---|---|
 | `task_list` | `TaskListScreen` | Main screen — all tasks, filter/sort controls |
-| `task_detail/{taskId}` | `TaskDetailScreen` | Create or edit a task |
+| `task_detail?taskId={taskId}` | `TaskDetailScreen` | Create or edit a task |
 | `search` | `SearchScreen` | Search across all tasks; copy completed tasks |
 
 ---

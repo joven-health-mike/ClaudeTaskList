@@ -132,14 +132,11 @@ The ViewModel handles the result with `onSuccess` / `onFailure` — no `try/catc
 ```kotlin
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+abstract class AppModule {
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideTaskRepository(
-        taskDao: TaskDao,
-        tagDao: TagDao
-    ): TaskRepository = TaskRepositoryImpl(taskDao, tagDao)
+    abstract fun bindTaskRepository(impl: TaskRepositoryImpl): TaskRepository
 }
 ```
 
