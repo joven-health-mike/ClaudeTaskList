@@ -1,18 +1,18 @@
 package com.lordinatec.claudetasklist.di
 
 import com.lordinatec.claudetasklist.data.repository.TaskRepository
-import com.lordinatec.claudetasklist.data.repository.TaskRepositoryStub
+import com.lordinatec.claudetasklist.data.repository.TaskRepositoryImpl
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+abstract class AppModule {
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideTaskRepository(): TaskRepository = TaskRepositoryStub()
+    abstract fun bindTaskRepository(impl: TaskRepositoryImpl): TaskRepository
 }

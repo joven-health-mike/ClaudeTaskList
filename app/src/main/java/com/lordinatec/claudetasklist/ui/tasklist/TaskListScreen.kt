@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
@@ -165,16 +167,18 @@ private fun FilterRow(
     activeFilter: Tag?,
     onFilterByTag: (Tag?) -> Unit
 ) {
-    LazyRow(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
-        item {
-            FilterChip(
-                selected = activeFilter == null,
-                onClick = { onFilterByTag(null) },
-                label = { Text("All") },
-                modifier = Modifier.padding(end = 8.dp)
-            )
-        }
-        items(allTags) { tag ->
+    Row(
+        modifier = Modifier
+            .horizontalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+    ) {
+        FilterChip(
+            selected = activeFilter == null,
+            onClick = { onFilterByTag(null) },
+            label = { Text("All") },
+            modifier = Modifier.padding(end = 8.dp)
+        )
+        allTags.forEach { tag ->
             FilterChip(
                 selected = activeFilter == tag,
                 onClick = { onFilterByTag(tag) },
